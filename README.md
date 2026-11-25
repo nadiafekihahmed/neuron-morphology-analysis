@@ -27,7 +27,7 @@ The pipeline extracts node count, branch-point count, terminal-tip count, dendri
 
 NeuroMorpho.Org provides metadata and standardized morphology files. Its terms require acknowledging NeuroMorpho.Org and citing the original peer-reviewed publication associated with each reconstruction.
 
-A convenient optional downloader is [neuromorphopy](https://neuromorphopy.readthedocs.io/). First preview the matching records; do not download until the filters and available sample counts have been checked:
+A convenient optional downloader is [neuromorphopy](https://neuromorphopy.readthedocs.io/). It requires Python 3.11 or later (the analysis code itself supports Python 3.10+). First inspect valid filter values and preview matching records; do not download until the filters and available sample counts have been checked:
 
 ```bash
 uv tool install neuromorphopy
@@ -75,13 +75,15 @@ Run:
 python -m src.run_analysis --manifest data/manifest.csv --output-dir outputs
 ```
 
+Run the small unit test with `pip install pytest && pytest`.
+
 ## Reproducibility and interpretation
 
 - Keep original SWC files unchanged.
 - Keep a manifest linking every file to its NeuroMorpho.Org record, archive, and original publication/DOI.
 - Exclude malformed files with a logged reason; never silently discard them.
 - Report sample sizes and missing metadata.
-- Use Welch's t-test only as a supplementary exploratory comparison; show distributions and effect sizes, and avoid causal claims.
+- The current script reports an exploratory Mann–Whitney U test when exactly two regions are present. Treat p-values cautiously, report sample sizes, inspect distributions, and do not make causal claims.
 - Do not upload raw data unless the source terms permit redistribution.
 
 ## Project status
