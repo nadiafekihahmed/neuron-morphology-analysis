@@ -19,7 +19,7 @@ def extract_features(result: SWCReadResult) -> dict[str, float | int]:
     lengths = []
     for row in dendrites.itertuples(index=False):
         parent_id = int(row.parent_id)
-        if parent_id in dendrite_ids:
+        if parent_id in by_id.index and int(by_id.loc[parent_id, "node_type"]) in [1, 3, 4]:
             parent = by_id.loc[parent_id]
             lengths.append(float(np.linalg.norm(
                 np.array([row.x, row.y, row.z], dtype=float)
@@ -36,8 +36,8 @@ def extract_features(result: SWCReadResult) -> dict[str, float | int]:
 
     return {
         "node_count": int(len(nodes)),
-        "branch_points": int((nodes["child_count"] > 1).sum()),
-        "terminal_tips": int((nodes["child_count"] == 0).sum()),
+        "dendritic_branch_points": int((dendrites["child_count"] > 1).sum()),
+        "dendritic_terminal_tips": int((dendrites["child_count"] == 0).sum()),
         "dendritic_length_um": float(sum(lengths)),
         "dendritic_extent_um": extent,
         "mean_dendritic_radius_um": mean_radius,
